@@ -56,7 +56,7 @@ class MainActivity : Activity() {
         store = Store(this)
         current = saved?.getString("current")
         mode = if (store.open != null) Mode.SESSION else Mode.HOME
-        intent?.getStringExtra("screen")?.let { if (it == "session" && store.open == null) begin(Coach.nextDay(store.sessions), render = false) }
+        intent?.getStringExtra("screen")?.let { if (it == "session" && store.open == null) begin(Coach.nextDay(store.sessions), show = false) }
         rest.onDone = { render() }
         render()
     }
@@ -243,12 +243,12 @@ class MainActivity : Activity() {
 
     // ---- Session -----------------------------------------------------------------------------
 
-    private fun begin(d: Day, render: Boolean = true) {
+    private fun begin(d: Day, show: Boolean = true) {
         val s = Session(System.currentTimeMillis(), d, System.currentTimeMillis())
         store.put(s)
         current = store.plan.of(d).firstOrNull()?.id
         mode = Mode.SESSION
-        if (render) render()
+        if (show) render()
     }
 
     private fun session(open: Session): Screen {
