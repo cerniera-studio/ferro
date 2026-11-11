@@ -94,7 +94,13 @@ class MainActivity : Activity() {
         }
         root.addView(content, FrameLayout.LayoutParams(-1, -1))
         (rest.parent as? FrameLayout)?.removeView(rest)
-        root.addView(rest, FrameLayout.LayoutParams(minOf(resources.displayMetrics.widthPixels - px(32), px(560)), -2, Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = px(24) })
+        // Unfolded in a session, the rest sits under the logger rather than across the crease
+        val split = wide && mode == Mode.SESSION && open != null
+        val span = if (split) resources.displayMetrics.widthPixels / 2 else resources.displayMetrics.widthPixels
+        val restW = minOf(span - px(32), px(560))
+        root.addView(rest, FrameLayout.LayoutParams(restW, -2, Gravity.BOTTOM or if (split) Gravity.START else Gravity.CENTER_HORIZONTAL).apply {
+            bottomMargin = px(24); if (split) leftMargin = (span - restW) / 2
+        })
         setContentView(root)
         concentrato()
     }
