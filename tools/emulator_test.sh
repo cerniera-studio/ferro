@@ -27,8 +27,8 @@ adb shell wm size 2256x2504; sleep 4; shot session-unfolded
 adb shell wm size reset; sleep 3
 
 # Finish and read the summary
-adb shell input swipe 540 1800 540 300 300; sleep 1
-tap_text "Finish session"; sleep 3; shot summary
+for i in 1 2 3 4; do adb shell input swipe 540 1900 540 300 200; sleep 0.8; done
+sleep 1; tap_text "Finish session"; sleep 3; shot summary
 tap_text "Done"; sleep 2; shot home-after
 
 # Day light
