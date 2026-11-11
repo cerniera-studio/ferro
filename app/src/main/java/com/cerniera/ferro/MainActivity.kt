@@ -310,9 +310,10 @@ class MainActivity : Activity() {
         val startReps = sets.lastOrNull()?.reps ?: target?.reps ?: e.repLow
         val kg = Stepper(this, "kilograms", startKg, e.increment)
         val reps = Stepper(this, "reps", startReps.toDouble(), 1.0)
-        val steppers = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
-        steppers.addView(kg, LinearLayout.LayoutParams(0, -2, 1f))
-        steppers.addView(reps, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = px(10) })
+        // Stacked, each the card's full width: room for the figure and two thumb-sized buttons on the cover screen
+        val steppers = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
+        steppers.addView(kg, LinearLayout.LayoutParams(-1, -2))
+        steppers.addView(reps, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(10) })
         card.addView(steppers, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(16) })
 
         val label = if (sets.size >= e.sets) "Log an extra set" else "Log set ${sets.size + 1} of ${e.sets}"
