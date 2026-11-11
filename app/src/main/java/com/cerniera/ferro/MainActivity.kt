@@ -449,23 +449,39 @@ class MainActivity : Activity() {
 
     // ---- Sheets ------------------------------------------------------------------------------
 
-    private fun weighIn() = Sheet.show(this, "Weigh in") { sh ->
+    private fun weighIn() {
         val f = field("Kilograms", store.weighs.lastOrNull()?.kg?.let { Coach.fmt(it) } ?: "", decimal = true)
-        sh.body.addView(text("Same time of day each time, ideally first thing.", 14f, Kit.MUTED).apply { setPadding(0, 0, 0, px(14)) })
-        sh.body.addView(f)
-        sh.body.addView(primary("Save") {
+        Sheet.show(this, "Weigh in", action = "Save" to { sh ->
             f.text.toString().replace(',', '.').toDoubleOrNull()?.takeIf { it in 30.0..300.0 }?.let { store.weigh(Weigh(LocalDate.now().toString(), it)) }
             sh.dismiss(); render()
-        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(16) })
+        }) { sh ->
+            sh.body.addView(text("Same time of day each time, ideally first thing.", 14f, Kit.MUTED).apply { setPadding(0, 0, 0, px(14)) })
+            sh.body.addView(f)
+        }
     }
 
-    private fun editExercise(e: Exercise?, d: Day) = Sheet.show(this, e?.name ?: "New exercise") { sh ->
+    private fun editExercise(e: Exercise?, d: Day) {
         val name = field("Name", e?.name ?: "")
         val sets = field("Sets", "${e?.sets ?: 3}", numeric = true)
         val lo = field("Reps from", "${e?.repLow ?: 8}", numeric = true)
         val hi = field("Reps to", "${e?.repHigh ?: 12}", numeric = true)
         val inc = field("Add when ready (kg)", Coach.fmt(e?.increment ?: 2.5), decimal = true)
         val rest = field("Rest (seconds)", "${e?.restSec ?: 120}", numeric = true)
+        Sheet.show(this, e?.name ?: "New exercise", action = "Save" to { sh ->
+            val n = name.text.toString().trim()
+            if (n.isNotEmpty()) {
+                val l = lo.text.toString().toIntOrNull()?.coerceIn(1, 50) ?: 8
+                val h = (hi.text.toString().toIntOrNull() ?: 12).coerceIn(l, 60)
+                val ex = Exercise(e?.id ?: "e${System.currentTimeMillis()}", n, d, sets.text.toString().toIntOrNull()?.coerceIn(1, 10) ?: 3, l, h,
+                    inc.text.toString().replace(',', '.').toDoubleOrNull()?.coerceIn(0.25, 50.0) ?: 2.5,
+                    rest.text.toString().toIntOrNull()?.coerceIn(15, 600) ?: 120, e?.order ?: (store.plan.of(d).maxOfOrNull { it.order } ?: 0) + 1)
+                store.setPlan(Plan(store.plan.exercises.filter { it.id != ex.id } + ex))
+                sh.dismiss(); render()
+            }
+        }) { sh -> fillExercise(sh, e, d, name, sets, lo, hi, inc, rest) }
+    }
+
+    private fun fillExercise(sh: Sheet, e: Exercise?, d: Day, name: View, sets: View, lo: View, hi: View, inc: View, rest: View) {
         fun pair(a: View, b: View) = LinearLayout(this).apply {
             orientation = LinearLayout.HORIZONTAL
             addView(a, LinearLayout.LayoutParams(0, -2, 1f)); addView(b, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = px(10) })
@@ -474,20 +490,9 @@ class MainActivity : Activity() {
         sh.body.addView(pair(sets, rest), LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(10) })
         sh.body.addView(pair(lo, hi), LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(10) })
         sh.body.addView(inc, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(10) })
-        sh.body.addView(primary("Save") {
-            val n = name.text.toString().trim()
-            if (n.isEmpty()) return@primary
-            val l = lo.text.toString().toIntOrNull()?.coerceIn(1, 50) ?: 8
-            val h = (hi.text.toString().toIntOrNull() ?: 12).coerceIn(l, 60)
-            val ex = Exercise(e?.id ?: "e${System.currentTimeMillis()}", n, d, sets.text.toString().toIntOrNull()?.coerceIn(1, 10) ?: 3, l, h,
-                inc.text.toString().replace(',', '.').toDoubleOrNull()?.coerceIn(0.25, 50.0) ?: 2.5,
-                rest.text.toString().toIntOrNull()?.coerceIn(15, 600) ?: 120, e?.order ?: (store.plan.of(d).maxOfOrNull { it.order } ?: 0) + 1)
-            store.setPlan(Plan(store.plan.exercises.filter { it.id != ex.id } + ex))
-            sh.dismiss(); render()
-        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(18) })
         if (e != null) sh.body.addView(primary("Remove from ${d.label}", filled = false) {
             store.setPlan(Plan(store.plan.exercises.filter { it.id != e.id })); sh.dismiss(); render()
-        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(10) })
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = px(18) })
     }
 
     // ---- Backup ------------------------------------------------------------------------------
