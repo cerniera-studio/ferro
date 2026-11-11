@@ -1,6 +1,6 @@
 # Ferro
 
-A training log for the Galaxy Z Fold 8 Ultra, built on Cerniera's [Kit](https://github.com/cerniera/kit)
+A training log for the Galaxy Z Fold 8 Ultra, built on Cerniera's [Kit](https://github.com/cerniera-studio/kit)
 to the Bellezza Necessaria mandate.
 
 **Folded**, Ferro is a one-handed logger: the exercise in hand, today's target, weight and reps on
