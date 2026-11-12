@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 108 x 108 canvas; the glyph stays inside the 66dp safe zone (21 to 87) -->
+<!-- Ferro: the barbell end-on, plates drawn in outline either side of the bar.
+     Ivory line work, one champagne element: the family icon style (see Fold Widgets, Cielo). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <!-- An iron bar between two pairs of plates: the barbell, seen end-on across the hinge -->
-    <path android:fillColor="#D9BB86" android:pathData="M30,50h48v8h-48z" />
-    <path android:fillColor="#D9BB86" android:pathData="M30,36a4,4 0 0 1 8,0v36a4,4 0 0 1 -8,0z" />
-    <path android:fillColor="#D9BB86" android:pathData="M40,41a3,3 0 0 1 6,0v26a3,3 0 0 1 -6,0z" />
-    <path android:fillColor="#D9BB86" android:pathData="M70,36a4,4 0 0 1 8,0v36a4,4 0 0 1 -8,0z" />
-    <path android:fillColor="#D9BB86" android:pathData="M62,41a3,3 0 0 1 6,0v26a3,3 0 0 1 -6,0z" />
-    <path android:fillColor="#D9BB86" android:pathData="M24,51.5h6v5h-6zM78,51.5h6v5h-6z" />
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M46,54h16"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M27,54h4M77,54h4"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M34,38h3a2,2 0 0 1 2,2v28a2,2 0 0 1 -2,2h-3a2,2 0 0 1 -2,-2v-28a2,2 0 0 1 2,-2z"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M42,43h2a2,2 0 0 1 2,2v18a2,2 0 0 1 -2,2h-2a2,2 0 0 1 -2,-2v-18a2,2 0 0 1 2,-2z"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M71,38h3a2,2 0 0 1 2,2v28a2,2 0 0 1 -2,2h-3a2,2 0 0 1 -2,-2v-28a2,2 0 0 1 2,-2z"/>
+    <path android:fillColor="#00000000" android:strokeColor="#FFF6F1E6" android:strokeWidth="1.8" android:strokeLineCap="round" android:strokeLineJoin="round" android:pathData="M64,43h2a2,2 0 0 1 2,2v18a2,2 0 0 1 -2,2h-2a2,2 0 0 1 -2,-2v-18a2,2 0 0 1 2,-2z"/>
+    <path android:pathData="M54,54m-3.2,0a3.2,3.2 0 1 1 6.4,0a3.2,3.2 0 1 1 -6.4,0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="44" android:startY="40" android:endX="64" android:endY="70">
+                <item android:offset="0" android:color="#FFF7E6C2"/>
+                <item android:offset="1" android:color="#FFB8995F"/>
+            </gradient>
+        </aapt:attr>
+    </path>
 </vector>
